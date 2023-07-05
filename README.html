@@ -1,0 +1,109 @@
+<h1 id="oblog-eyes">oBlog 👀</h1>
+<p>On va démarrer notre projet <strong>oBlog</strong>, sans avoir encore le rendu HTML/CSS.  <br />
+Ce n'est pas grave, on peut commencer par anticiper la structure de notre projet =&gt; fichiers &amp; dossiers.</p>
+<h2 id="code-fourni-palm_tree">Code fourni 🌴</h2>
+<ul>
+<li>une intégration HTML/CSS (qui n'en est pas vraiment une) est fournie</li>
+<li>seule la page d'accueil est mise en place</li>
+<li>la nav nous permettra de naviguer facilement entre nos pages</li>
+</ul>
+<h2 id="créons-les-fichiers-point-dentrée-hammer">Créons les fichiers "point d'entrée" 🔨</h2>
+<p>Un <strong>point d'entrée</strong> est un fichier qui sera accédé via une requête HTTP effectuée par le navigateur.  <br />
+<code>http://www.monsite.fr/</code>, le point d'entrée n'est pas stipulé, mais c'est <code>index.php</code>  <br />
+<code>http://www.monsite.fr/test.php</code>, le point d'entrée est <code>test.php</code> à la racine du projet  <br />
+<code>http://www.monsite.fr/dossier/article.php</code>, le point d'entrée est <code>article.php</code> dans le sous-dossier "dossier"</p>
+<h3 id="etapes-computer">Etapes 💻</h3>
+<ul>
+<li>à la racine, créer les fichiers :</li>
+<li><code>category.php</code> =&gt; page listant les articles d'une catégorie</li>
+<li><code>author.php</code> =&gt; page listant les articles d'un auteur</li>
+<li><code>article.php</code> =&gt; page affichant un article</li>
+<li>dans le dossier <code>inc/templates</code> :</li>
+<li>créer un fichier de templates par page</li>
+<li>y écrire le nom de la page (et un peu d'HTML si vous voulez 😉)</li>
+<li>dans chaque fichier à la racine :</li>
+<li>inclure toutes les classes utiles</li>
+<li>afficher le code HTML grâce aux templates</li>
+<li>vérifier l'affichage correct des 3 nouvelles pages</li>
+</ul>
+<h2 id="factorisation-hocho">Factorisation 🔪</h2>
+<p>En tant que dévs, on est fainéant. Et on voit bien que des bouts de code vont se répéter dans chaque "point d'entrée".  <br />
+On va donc, désormais, n'utiliser qu'un seul et unique point d'entrée : <code>index.php</code></p>
+<h3 id="1---distinguer-chaque-page-mag">#1 - Distinguer chaque page 🔍</h3>
+<ul>
+<li>se baser sur un paramètre d'URL : "page"</li>
+<li><code>category.php</code> =&gt; <code>http://localhost/folder/subfolder/S04-E03-oBlog/index.php?page=category</code></li>
+<li><code>author.php</code> =&gt; <code>http://localhost/folder/subfolder/S04-E03-oBlog/index.php?page=author</code></li>
+<li><code>article.php</code> =&gt; <code>http://localhost/folder/subfolder/S04-E03-oBlog/index.php?page=article</code></li>
+<li>récupérer ce paramètre en GET dans <code>index.php</code></li>
+<li>si le paramètre n'est pas fourni, c'est qu'on est sur la home</li>
+<li>grâce à des <code>if</code>, <code>else if</code> et <code>else</code>, afficher le nom de la page</li>
+<li>le but est de vérifier qu'on arrive bien à distinguer chaque page</li>
+</ul>
+<h3 id="2---gérer-laffichage-de-chaque-page-lipstick">#2 - Gérer l'affichage de chaque page 💄</h3>
+<ul>
+<li>analyser les bouts de code <em>qui changent</em> dans les fichiers à la racine</li>
+<li>remplacer les chaînes de caractères <em>qui changent</em> par une variable</li>
+<li>coder l'affichage de toutes les pages dans <code>index.php</code></li>
+<li><em>si la page demandée est l'accueil, alors je charge la template correspondante</em></li>
+<li><em>sinon si la page demandée est la page catégorie, alors je charge la template correspondante</em></li>
+<li>etc.</li>
+</ul>
+<p><strong>On a réussi à factoriser, à ne pas se répéter</strong> 🎉</p>
+<p>Donc on peut désormais supprimer les fichiers <code>category.php</code>, <code>author.php</code> et <code>article.php</code>.</p>
+<h2 id="récupérer-les-données">Récupérer les données</h2>
+<h3 id="1---page-daccueil">#1 - Page d'accueil</h3>
+<ul>
+<li>inclure le fichier de données <code>inc/data.php</code></li>
+<li>récupérer le tableau des articles</li>
+<li>dans la template :</li>
+<li>parcourir le tableau pour afficher titre et texte des articles</li>
+<li>renseigner le lien vers la page de chaque article (ajouter l'id dans l'URL <code>?page=article&amp;id=45</code>)</li>
+</ul>
+<p><details><summary>Spoiler</summary></p>
+<pre><code class="hljs php language-php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-comment">// Inclusion du fichier contenant les données</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;inc/data.php&#x27;</span>;
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-comment">// Récupération des articles</span>
+<span class="hljs-variable">$articlesList</span> = <span class="hljs-variable">$dataArticlesList</span>;
+
+<span class="hljs-comment">// Debug pour vérifier le contenu de la variable</span>
+<span class="hljs-title function_ invoke__">print_r</span>(<span class="hljs-variable">$articlesList</span>); <span class="hljs-keyword">exit</span>; <span class="hljs-comment">// à commenter une fois vérifié</span>
+
+<span class="hljs-comment">// ...</span>
+</code></pre>
+<p></details></p>
+<h3 id="2---page-article">#2 - Page Article</h3>
+<ul>
+<li>inclure le fichier de données <code>inc/data.php</code></li>
+<li>récupérer l'id fourni en paramètre de l'URL (<code>$_GET</code>)</li>
+<li>récupérer l'objet article pour l'id fourni</li>
+<li>dans la template (à créer si besoin) :</li>
+<li>afficher titre et texte de l'article</li>
+</ul>
+<p><details><summary>Spoiler</summary></p>
+<pre><code class="hljs php language-php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-comment">// Inclusion du fichier contenant les données</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;inc/data.php&#x27;</span>;
+
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-comment">// Récupération des données de l&#x27;article #3</span>
+<span class="hljs-variable">$articleData</span> = <span class="hljs-variable">$dataArticlesList</span>[<span class="hljs-number">3</span>];
+
+<span class="hljs-comment">// Debug pour vérifier le contenu de la variable</span>
+<span class="hljs-title function_ invoke__">print_r</span>(<span class="hljs-variable">$articleData</span>); <span class="hljs-keyword">exit</span>; <span class="hljs-comment">// à commenter une fois vérifié</span>
+
+<span class="hljs-comment">// ...</span>
+</code></pre>
+<p></details></p>
+<p><strong>On a réussi à dynamiser le contenu de notre site</strong> 🎉</p>
